@@ -1,0 +1,6 @@
+Create a repository to make methods to find something to u using a repository.
+Ex: findByName, findByEmail, findById, etc.
+
+Services = business rules.
+
+Celebrate is a framework to valid data from requests.
