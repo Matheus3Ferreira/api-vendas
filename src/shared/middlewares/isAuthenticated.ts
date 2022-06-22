@@ -3,6 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import authConfig from "@config/auth";
 
+interface ITokenPayLoad {
+    iat: number;
+    exp: number;
+    sub: string;
+}
 
 export default function isAuthenticated(request: Request, response: Response, next: NextFunction): void {
     const authHeader = request.headers.authorization;
@@ -15,6 +20,12 @@ export default function isAuthenticated(request: Request, response: Response, ne
 
     try {
         const decodeToken = verify(token, authConfig.jwt.secret);
+        const { sub } = decodeToken as ITokenPayLoad; // sub == id do usuário
+
+        request.user = {
+            id: sub
+        };
+
         return next();
     } catch {
         throw new AppError("Invalid JWT Token.");
